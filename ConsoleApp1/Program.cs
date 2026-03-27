@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-Character Phaquirr = new(
+Operator Phaquirr = new(
     name: "Phaquirr",
     hitPoints: 500,
     basicAttackDamage: 70,
@@ -7,7 +7,7 @@ Character Phaquirr = new(
 );
 
 
-Character Aryas = new(
+Operator Aryas = new(
     name: "Arya",
     hitPoints: 400,
     basicAttackDamage: Random.Shared.Next(65, 100),
@@ -15,24 +15,40 @@ Character Aryas = new(
 );
 
 
-CoinFlip();
+// CoinFlip();
 Rounds(Phaquirr, Aryas);
+OperatorSelection();
 
 
 
 
-// var characterOrderAssignment
+static void OperatorSelection()
+{
+    string[] operatorInformationArray = { "Phaquirr - Technician, Damage Specialist", "Arya - Ranger, Dissruptor" };
+    Console.WriteLine("Choose your Operator by entering the displayed number.");
+    Thread.Sleep(1000);
+    for (int i = 0; i < operatorInformationArray.Count(); i++)
+    {
+        Console.WriteLine($"({i}) {operatorInformationArray[i]}");
+    }
+    Console.ReadLine();
 
 
-
-
-
-
+    string operatorSelected = Console.ReadLine();
+    while (int.TryParse(operatorSelected, out int operatorSelectedInt) == false || 0 < operatorSelectedInt || operatorSelectedInt < operatorSelected.Count())
+    {
+        Console.WriteLine("invalid answer, try again.");
+        operatorSelected = Console.ReadLine();
+    }
+}
 
 
 
 static int CoinFlip()
 {
+    string playerStarts = Random.Shared.Next(2) == 0 ? "left" : "right";
+
+
     int coinFlipSleepAnimation = 30;
     Console.WriteLine("Flip a coin tetermine who starts");
     Console.ReadLine();
@@ -40,12 +56,10 @@ static int CoinFlip()
     {
         Thread.Sleep(10 * i);
         Console.Clear();
-        int coinFlip = Random.Shared.Next(1, 3);
+        int coinFlip = Random.Shared.Next(2);
         string coinFlipName = "tails";
-        if(coinFlip == 1)
-        {
-            coinFlipName = "Heads";
-        }
+        if (coinFlip == 1) coinFlipName = "Heads";
+
         Console.WriteLine(coinFlipName);
     }
 
@@ -65,7 +79,7 @@ static int CoinFlip()
     return coinFlipResult;
 }
 
-static void Rounds(Character Phaquirr, Character Aryas)
+static void Rounds(Operator Phaquirr, Operator Aryas)
 {
     Console.WriteLine(Phaquirr.Name);
     Console.ReadLine();
