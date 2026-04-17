@@ -1,9 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Security.AccessControl;
+using Microsoft.VisualBasic;
+
+List<Operator> operatorList = new();
+int randomPlayerSelector = Random.Shared.Next(2);
+
 Operator Phaquirr = new(
     name: "Phaquirr",
     hitPoints: 500,
     basicAttackDamage: 70,
-    gimmickAttack: 70
+    gimmickAttack: 70,
+    operatorList,
+    operatorDescription: "Phaquirr - Damage Specialist, Technician"
 );
 
 
@@ -11,39 +18,82 @@ Operator Aryas = new(
     name: "Arya",
     hitPoints: 400,
     basicAttackDamage: Random.Shared.Next(65, 100),
-    gimmickAttack: 20
+    gimmickAttack: 20,
+    operatorList,
+    operatorDescription: "Arya - Ranger, Dissruptor"
 );
 
 
-// CoinFlip();
-Rounds(Phaquirr, Aryas);
-OperatorSelection();
+Operator MrBigRed = new(
+    name: "Mr. Big Red",
+    hitPoints: 1000,
+    basicAttackDamage: 45,
+    gimmickAttack: 70,
+    operatorList,
+    operatorDescription: "Mr. Big Red - Tank, Stalwart"
+);
+operatorList = [Phaquirr, Aryas, MrBigRed];
 
 
 
 
-static void OperatorSelection()
+
+
+
+
+
+Operator player1Operator = OperatorSelection(operatorList, randomPlayerSelector);
+Rounds(player1Operator, Aryas);
+
+Console.WriteLine("Press ENTER to close");
+Console.ReadLine();
+
+
+
+
+
+
+
+
+
+
+static Operator OperatorSelection(List<Operator> operatorList, int randomPlayerSelector)
 {
-    string[] operatorInformationArray = { "Phaquirr - Technician, Damage Specialist", "Arya - Ranger, Dissruptor" };
-    Console.WriteLine("Choose your Operator by entering the displayed number.");
-    Thread.Sleep(1000);
-    for (int i = 0; i < operatorInformationArray.Count(); i++)
+    while (true)
     {
-        Console.WriteLine($"({i}) {operatorInformationArray[i]}");
+    List<string> playerPositionList = ["right", "left"];
+
+    string randomPlayerSelectorPosition = "right";
+    if (randomPlayerSelector == 1) randomPlayerSelectorPosition = "left";
+    Console.WriteLine($"Player to the {randomPlayerSelectorPosition}, choose your Operator by entering the displayed number.");
+    Thread.Sleep(1000);
+    for (int i = 0; i < operatorList.Count(); i++)
+    {
+        Console.WriteLine($"({i}) {operatorList[i].OperatorDescription}");
+    }
+    if (randomPlayerSelector == 1)
+    {
+        randomPlayerSelector = 2; 
     }
     Console.ReadLine();
+    Console.Clear();
+
+    }
 
 
     string operatorSelected = Console.ReadLine();
-    while (int.TryParse(operatorSelected, out int operatorSelectedInt) == false || 0 < operatorSelectedInt || operatorSelectedInt < operatorSelected.Count())
+    int operatorSelectedInt;
+    while (int.TryParse(operatorSelected, out operatorSelectedInt) == false || operatorSelectedInt < 0 || operatorSelectedInt >= operatorList.Count)
     {
         Console.WriteLine("invalid answer, try again.");
         operatorSelected = Console.ReadLine();
     }
+    return operatorList[operatorSelectedInt];
+    
 }
 
 
-
+// CoinFlip 
 static int CoinFlip()
 {
     string playerStarts = Random.Shared.Next(2) == 0 ? "left" : "right";
