@@ -59,25 +59,11 @@ Console.ReadLine();
 
 static Operator OperatorSelection(List<Operator> operatorList, int randomPlayerSelector)
 {
-    while (true)
-    {
-    List<string> playerPositionList = ["right", "left"];
-
-    string randomPlayerSelectorPosition = "right";
-    if (randomPlayerSelector == 1) randomPlayerSelectorPosition = "left";
-    Console.WriteLine($"Player to the {randomPlayerSelectorPosition}, choose your Operator by entering the displayed number.");
+    randomPlayerSelecting(randomPlayerSelector);
     Thread.Sleep(1000);
     for (int i = 0; i < operatorList.Count(); i++)
     {
         Console.WriteLine($"({i}) {operatorList[i].OperatorDescription}");
-    }
-    if (randomPlayerSelector == 1)
-    {
-        randomPlayerSelector = 2; 
-    }
-    Console.ReadLine();
-    Console.Clear();
-
     }
 
 
@@ -92,6 +78,20 @@ static Operator OperatorSelection(List<Operator> operatorList, int randomPlayerS
     
 }
 
+static void randomPlayerSelecting(int randomPlayerSelector)
+{
+    List<string> playerPositionList = ["left", "right"];
+
+
+
+    string randomPlayerSelectorPosition = "left";
+    if (randomPlayerSelector == 1) 
+    {
+        randomPlayerSelectorPosition = "right";
+        playerPositionList.RemoveAt(1);
+    }
+    Console.WriteLine($"Player to the {randomPlayerSelectorPosition}, choose your Operator by entering the displayed number.");
+}
 
 // CoinFlip 
 static int CoinFlip()
